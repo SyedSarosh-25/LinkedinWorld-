@@ -1,0 +1,225 @@
+@import "tailwindcss";
+
+/* Single dark, cinematic look. */
+:root {
+  --bg: #05070a;
+  --surface: #0c1014;
+  --fg: #eef2f4;
+  --muted: #9ba7b1;
+  --faint: #66727c;
+  --line: rgba(238, 242, 244, 0.12);
+  --accent: #3fd4e4;
+  --accent-ink: #031317;
+  --steel: #a3acb5;
+  --band-bg: #080b0f;
+  --band-fg: #eef2f4;
+  --band-muted: #9ba7b1;
+  --band-accent: #3fd4e4;
+  --globe-base: #0b0f13;
+  --globe-dot: #dde6ec;
+  --dot: #26303a;
+  --band-dot: #202830;
+  --glow: rgba(63, 212, 228, 0.14);
+  --grain-opacity: 0.06;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-band: var(--band-bg);
+  --color-band-fg: var(--band-fg);
+  --color-band-muted: var(--band-muted);
+  --color-band-accent: var(--band-accent);
+  --font-sans: "Onest Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Archivo Variable", "Arial Black", ui-sans-serif, sans-serif;
+}
+
+@layer base {
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-sans);
+    font-size: 17px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+    font-weight: 600;
+  }
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}
+
+/* fine film grain over everything, so flat fills don't read as flat */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: var(--grain-opacity);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@keyframes orbit-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.orbit-spin {
+  animation: orbit-spin 90s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .orbit-spin {
+    animation: none;
+  }
+}
+
+/* soft light behind a focal object, faded with a mask so it has no edge */
+.spotlight {
+  position: absolute;
+  pointer-events: none;
+  background: radial-gradient(closest-side, var(--glow), transparent);
+}
+.fade-mask {
+  -webkit-mask-image: radial-gradient(ellipse 70% 65% at 50% 45%, #000 30%, transparent 85%);
+  mask-image: radial-gradient(ellipse 70% 65% at 50% 45%, #000 30%, transparent 85%);
+}
+
+/* expanded, heavy display type */
+.display {
+  font-family: var(--font-display);
+  font-stretch: 125%;
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 0.92;
+}
+.outline-text {
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(238, 242, 244, 0.35);
+}
+@keyframes scrollcue {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(200%);
+  }
+}
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+@keyframes tagdrift {
+  from {
+    transform: translate3d(-14px, 10px, 0);
+  }
+  to {
+    transform: translate3d(14px, -12px, 0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tag-drift {
+    animation: none !important;
+  }
+}
+.marquee {
+  animation: marquee 40s linear infinite;
+}
+/* oversized image that drifts inside its frame on scroll */
+.parallax {
+  overflow: hidden;
+}
+.parallax img {
+  position: absolute;
+  left: 0;
+  top: -8%;
+  width: 100%;
+  height: 116%;
+}
+.fade-x {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+}
+.marquee-rev {
+  animation: marquee 46s linear infinite reverse;
+}
+@media (prefers-reduced-motion: reduce) {
+  .marquee,
+  .marquee-rev {
+    animation: none;
+  }
+}
+@media (pointer: fine) {
+  html.has-cursor,
+  html.has-cursor a,
+  html.has-cursor button {
+    cursor: none;
+  }
+}
+
+@layer components {
+  .container-x {
+    @apply mx-auto w-full max-w-[1240px] px-4 sm:px-8;
+  }
+  .h2 {
+    @apply text-[clamp(32px,4.2vw,54px)] leading-[1.05] tracking-[-0.035em];
+  }
+  .lede {
+    @apply max-w-[34em] text-[19px] text-muted;
+  }
+  .btn {
+    @apply inline-flex min-h-[52px] cursor-pointer items-center justify-center rounded-full border-0 bg-accent px-[30px] text-[17px] leading-none font-semibold text-accent-ink no-underline transition-transform duration-200 hover:-translate-y-0.5 motion-reduce:transition-none;
+  }
+  /* glowing pill CTA with a soft ring, the cinematic-home button */
+  .pill {
+    @apply inline-flex min-h-[54px] cursor-pointer items-center justify-center gap-2 rounded-full bg-accent px-8 text-[16px] font-semibold text-accent-ink no-underline transition-[transform,box-shadow] duration-300 hover:-translate-y-0.5 motion-reduce:transition-none;
+    box-shadow:
+      0 0 0 4px color-mix(in srgb, var(--accent) 22%, transparent),
+      0 14px 44px -10px var(--accent);
+  }
+  .pill:hover {
+    box-shadow:
+      0 0 0 6px color-mix(in srgb, var(--accent) 28%, transparent),
+      0 18px 60px -8px var(--accent);
+  }
+  .pill-ghost {
+    @apply inline-flex min-h-[54px] items-center justify-center gap-2 rounded-full border border-white/20 bg-white/5 px-7 text-[16px] font-semibold text-fg no-underline backdrop-blur-md transition-colors duration-300 hover:bg-white/12;
+  }
+  .eyebrow {
+    @apply inline-flex items-center gap-2 text-[13px] font-semibold tracking-[0.18em] text-accent uppercase;
+  }
+  .btn-ghost {
+    @apply inline-flex min-h-[44px] items-center justify-center rounded-full px-5 text-[15px] font-semibold text-fg no-underline shadow-[inset_0_0_0_1.5px_var(--fg)];
+  }
+}
