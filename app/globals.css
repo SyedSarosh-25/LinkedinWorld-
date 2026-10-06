@@ -167,6 +167,15 @@ body::after {
   width: 100%;
   height: 116%;
 }
+/* reduced motion: no scroll choreography, so show the opened-up end state of "In the field" */
+@media (prefers-reduced-motion: reduce) {
+  .field-img {
+    clip-path: none !important;
+  }
+  .field-word {
+    display: none !important;
+  }
+}
 .fade-x {
   -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
   mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);

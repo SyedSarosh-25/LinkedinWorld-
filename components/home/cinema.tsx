@@ -259,7 +259,7 @@ export function Cinema() {
             All case studies <Arrow />
           </Link>
         </div>
-        <div className="mt-14 flex snap-x snap-mandatory gap-5 overflow-x-auto px-4 pb-4 [scrollbar-width:none] sm:px-8 lg:px-[max(2rem,calc((100vw-1240px)/2+2rem))]">
+        <div className="mt-14 flex snap-x snap-mandatory gap-5 overflow-x-auto px-4 pb-4 [scrollbar-width:none] sm:px-8 lg:px-[max(2rem,calc((100vw_-_1240px)_/_2_+_2rem))]">
           {work.map((w) => {
             const m = media.work[w.slug];
             const lead = w.metrics[0];
